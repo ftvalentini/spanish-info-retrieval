@@ -125,3 +125,4 @@ config/*
 tmp/*
 backup/*
 notebooks/**/*.csv
+*.trec
