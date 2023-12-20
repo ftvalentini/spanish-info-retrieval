@@ -1,7 +1,7 @@
 
 ## Set up
 
-Create conda environment: 
+Create conda environment:
 
 ```bash
 conda create -n spanish-ir python=3.10
@@ -10,14 +10,24 @@ conda create -n spanish-ir python=3.10
 And install requirements:
 
 ```bash
-conda activate spanish-ir
+conda activate spanish-irtm
 # # For GPU, install pytorch with the correct cuda version (see output of nvidia-smi):
-# conda install pytorch pytorch-cuda=11.7 -c pytorch -c nvidia 
+# conda install pytorch pytorch-cuda=11.7 -c pytorch -c nvidia
 # For CPU only:
 conda install pytorch cpuonly -c pytorch
+# Install jdk (needed for pyserini)
+conda install -c conda-forge openjdk=11 maven -y
 pip install -r requirements.txt
 ```
 
+**Note**: you might have issues installing `nmslib`. If so, do the following:
+
+```bash
+pip install --upgrade pybind11        # 2.10.1 or higher  (latest as of today: 2.11.1)
+pip install --verbose  'nmslib @ git+https://github.com/nmslib/nmslib.git#egg=nmslib&subdirectory=python_bindings'
+```
+
+Then, re-run `pip install -r requirements.txt`. See [this](https://github.com/nmslib/nmslib/issues/538) for further details.
 
 ### Verify pyserini installation
 

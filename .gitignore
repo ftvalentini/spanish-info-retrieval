@@ -124,3 +124,4 @@ config/*
 **/wandb/*
 tmp/*
 notebooks/**/*.csv
+*.trec
