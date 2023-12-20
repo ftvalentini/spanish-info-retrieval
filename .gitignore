@@ -123,6 +123,7 @@ runs/*
 config/*
 **/wandb/*
 tmp/*
+backup/*
 notebooks/**/*.csv
 *.trec
 data/*

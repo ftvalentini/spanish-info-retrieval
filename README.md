@@ -20,6 +20,20 @@ conda install -c conda-forge openjdk=11 maven -y
 pip install -r requirements.txt
 ```
 
+Install git lfs to git clone large files from huggingface:
+
+```bash
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash &&
+sudo apt-get install git-lfs &&
+git lfs install
+```
+
+Others:
+
+```bash
+chmod +x scripts/*.sh
+```
+
 **Note**: you might have issues installing `nmslib`. If so, do the following:
 
 ```bash
@@ -63,6 +77,49 @@ Sources:
 
 * https://github.com/castorini/pyserini/blob/e6700f6a1bca7d2bea81fb40d9c3ae63c1be142a/docs/installation.md?plain=1#L75
 * https://github.com/castorini/pyserini/blob/e6700f6a1bca7d2bea81fb40d9c3ae63c1be142a/scripts/beir/run_beir_baselines.py#L57
+
+
+
+### Create BM25 Lucene index
+
+
+Download MIRACL documents, queries and qrels (all languages):
+
+```bash
+# Requires Access Token authentication:
+mkdir -p data &&
+cd data && 
+git clone https://huggingface.co/datasets/miracl/miracl-corpus && 
+git clone https://huggingface.co/datasets/miracl/miracl &&
+cd -
+```
+
+Create index:
+
+```bash
+scripts/create_lucene-index.sh
+```
+
+Replicate results from Table 2 in https://arxiv.org/pdf/2210.09984.pdf:
+
+```bash
+# Run retrieval on dev set:
+python -m pyserini.search.lucene  \
+    --index  runs/indexes/lucene-index.miracl-v1.0-es \
+    --topics data/miracl/miracl-v1.0-es/topics/topics.miracl-v1.0-es-dev.tsv \
+    --output runs/run.miracl-v1.0-es.bm25.topics.miracl-v1.0-es.dev.txt \
+    --bm25 --language es
+
+# Evaluate with nDCG@10 & Recall@100:
+python -m pyserini.eval.trec_eval -c -m ndcg_cut.10 -m recall.100  \
+    data/miracl/miracl-v1.0-es/qrels/qrels.miracl-v1.0-es-dev.tsv \
+    runs/run.miracl-v1.0-es.bm25.topics.miracl-v1.0-es.dev.txt
+# recall_100              all     0.7018
+# ndcg_cut_10             all     0.3193
+```
+
+Source: https://github.com/castorini/pyserini/blob/1219cdbca780e869ba77658c29e1aaa972585d09/docs/experiments-miracl-v1.0.md
+
 
 
 --------------------
