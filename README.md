@@ -10,7 +10,7 @@ conda create -n spanish-ir python=3.10
 And install requirements:
 
 ```bash
-conda activate spanish-irtm
+conda activate spanish-ir
 # # For GPU, install pytorch with the correct cuda version (see output of nvidia-smi):
 # conda install pytorch pytorch-cuda=11.7 -c pytorch -c nvidia
 # For CPU only:
