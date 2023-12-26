@@ -121,6 +121,17 @@ python -m pyserini.eval.trec_eval -c -m ndcg_cut.10 -m recall.100  \
 Source: https://github.com/castorini/pyserini/blob/1219cdbca780e869ba77658c29e1aaa972585d09/docs/experiments-miracl-v1.0.md
 
 
+### Wikipedia corpus
+
+Download total pageviews in Spanish Wikipedia for each title in MIRACL:
+
+```bash
+nohup python scripts/download_wiki-pageviews.py \
+    --outfile runs/wikipedia-pageviews.txt \
+    >& logs/log.wiki-pageviews.txt &
+```
+
+
 
 --------------------
 

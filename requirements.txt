@@ -4,3 +4,5 @@ transformers==4.35.2
 datasets==2.15.0
 ipykernel==6.27.1
 ipywidgets==8.1.1
+mwviews==0.2.1
+tqdm==4.66.1
